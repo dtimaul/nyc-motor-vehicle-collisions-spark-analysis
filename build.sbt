@@ -11,6 +11,6 @@ lazy val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
 
 lazy val root = (project in file("."))
   .settings(
-    name := "spark-example",
+    name := "spark-assignment-2",
     libraryDependencies ++= Seq(scalaTest % Test, sparkCore, sparkSql)
   )
