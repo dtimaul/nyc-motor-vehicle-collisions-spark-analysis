@@ -105,6 +105,18 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     spark.read.parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH).cache()
   }
 
+  private def loadPersons: DataFrame = {
+    spark.read.parquet(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH).cache()
+  }
+
+  private def loadVehicles: DataFrame = {
+    spark.read.parquet(NYC_MV_COLLISIONS_VEHICLES_PARQUET_PATH).cache()
+  }
+
+  private def loadTreeCensus: DataFrame = {
+    spark.read.parquet(NYC_TREE_CENSUS_PARQUET_PATH).cache()
+  }
+
   /**
    * Keep the Spark Context running so the Spark UI can be viewed after the test has completed.
    * This is enabled by setting `BLOCK_ON_COMPLETION = true` above.
@@ -133,7 +145,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   /**
    * What is the top 5 most frequent contributing factor for accidents in NYC?
    */
-  test("What is the top 5 most frequent contributing factor for accidents in NYC?") {
+  test("What isAssignment2Test the top 5 most frequent contributing factor for accidents in NYC?") {
 //    Assignment1.problem3(tripDataRdd).toSet must equal(Set("Customer", "Subscriber"))
     val actualDF = Assignment2.problem3(loadCrashes)
     actualDF.show(5)
