@@ -3,7 +3,7 @@ package com.spark.assignment2
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.functions._
 
 object Assignment2 {
@@ -18,15 +18,17 @@ object Assignment2 {
   }
 
   /**
-   * What is the top 5 most frequent contributing factor for accidents in NYC?
+   * What is the mostSounds frequent contributing factor for accidents in NYC?
    */
-  def problem3(collisions: DataFrame): DataFrame = {
-      collisions.groupBy("CONTRIBUTING_FACTOR_VEHICLE_1").count().sort()
+  def problem3(collisions: DataFrame): String = {
+      collisions.groupBy("CONTRIBUTING_FACTOR_VEHICLE_1").count().sort().first().getString(0)
   }
 
   def problem4(collisions: DataFrame): DataFrame = {
     collisions.select("CRASH_DATE")
   }
+
+
 
   def problem5(collisions: DataFrame): DataFrame = {
     collisions.select("CRASH_DATE")

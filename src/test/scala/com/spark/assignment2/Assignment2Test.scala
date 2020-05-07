@@ -3,14 +3,15 @@ package com.spark.assignment2
 import java.nio.file.{Files, Paths}
 
 import org.apache.spark.sql._
+import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
+import scala.collection
 import scala.concurrent.duration._
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
-
   /**
    * Set this value to 'true' to halt after execution so you can view the Spark UI at localhost:4040.
    * NOTE: If you use this, you must terminate your test manually.
@@ -49,6 +50,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     Map("inferSchema" -> true.toString, "header" -> true.toString)
 
   // Create parquet datasets that are used in later tests
+  // TODO: Add option to parse date timestamps
   override def beforeAll() {
     if (!Files.exists(Paths.get(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH))) {
       def nycMvCrashesDF: DataFrame = spark.read.options(csvReadOptions).csv(NYC_MV_COLLISIONS_CRASHES_PATH)
@@ -143,12 +145,23 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
 //  }
 //
   /**
-   * What is the top 5 most frequent contributing factor for accidents in NYC?
+   * What is the most frequent contributing factor for accidents in NYC?
    */
-  test("What isAssignment2Test the top 5 most frequent contributing factor for accidents in NYC?") {
-//    Assignment1.problem3(tripDataRdd).toSet must equal(Set("Customer", "Subscriber"))
-    val actualDF = Assignment2.problem3(loadCrashes)
-    actualDF.show(5)
+  test("What is the most frequent contributing factor for accidents in NYC?") {
+    Assignment2.problem3(loadCrashes) must equal("Following Too Closely")
+//    actualDF.show(1, false)
+//    actualDF.printSchema()
+
+
+    val expectedData = Seq(
+      Row("Following Too Closely", "84660"),
+      Row("Traffic Control Disregarded", "25342"),
+      Row("Driverless/Runaway Vehicle" ,"849"),
+      Row("Accelerator Defective", "811"),
+      Row("Windshield Inadequate", 69)
+    )
+
+
   }
 //
 //  /**
