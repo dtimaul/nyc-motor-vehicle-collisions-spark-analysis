@@ -137,31 +137,27 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       Assignment2.problem1(loadCrashes)
   }
 
-//  /**
-  //   * What percentage of accidents had alcohol as a contributing factor?
-//   */
-//  test("What percentage of accidents had alcohol as a contributing factor?") {
-//    Assignment1.problem2(tripDataRdd) must equal(1069)
-//  }
-//
   /**
-   * What is the most frequent contributing factor for accidents in NYC?
+     * What percentage of accidents had alcohol as a contributing factor?
    */
-  test("What is the most frequent contributing factor for accidents in NYC?") {
-    Assignment2.problem3(loadCrashes) must equal("Following Too Closely")
-//    actualDF.show(1, false)
-//    actualDF.printSchema()
+  test("What percentage of accidents had alcohol as a contributing factor?") {
+//    Assignment1.problem2(tripDataRdd) must equal(1069)
+    Assignment2.problem2(loadCrashes)
+  }
 
-
-    val expectedData = Seq(
-      Row("Following Too Closely", "84660"),
-      Row("Traffic Control Disregarded", "25342"),
-      Row("Driverless/Runaway Vehicle" ,"849"),
-      Row("Accelerator Defective", "811"),
+  /**
+   * What is the top five most frequent contributing factors for accidents in NYC?
+   */
+  test("Top five most frequent contributing factors for accidents in NYC") {
+    val expectedData = Array(
+      Row("Following Too Closely", 84660),
+      Row("Traffic Control Disregarded", 25342),
+      Row("Driverless/Runaway Vehicle" ,849),
+      Row("Accelerator Defective", 811),
       Row("Windshield Inadequate", 69)
     )
 
-
+    Assignment2.problem3(loadCrashes) must equal(expectedData)
   }
 //
 //  /**

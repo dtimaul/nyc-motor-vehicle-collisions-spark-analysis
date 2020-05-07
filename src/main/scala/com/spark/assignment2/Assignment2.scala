@@ -18,17 +18,15 @@ object Assignment2 {
   }
 
   /**
-   * What is the mostSounds frequent contributing factor for accidents in NYC?
+   * What is the top five most frequent contributing factors for accidents in NYC?
    */
-  def problem3(collisions: DataFrame): String = {
-      collisions.groupBy("CONTRIBUTING_FACTOR_VEHICLE_1").count().sort().first().getString(0)
+  def problem3(collisions: DataFrame): Seq[Row] = {
+      collisions.groupBy("CONTRIBUTING_FACTOR_VEHICLE_1").count().sort().head(5).toSeq
   }
 
   def problem4(collisions: DataFrame): DataFrame = {
     collisions.select("CRASH_DATE")
   }
-
-
 
   def problem5(collisions: DataFrame): DataFrame = {
     collisions.select("CRASH_DATE")
