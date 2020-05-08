@@ -13,14 +13,19 @@ object Assignment2 {
     collisions.select("CRASH_DATE")
   }
 
-  def problem2(collisions: DataFrame): Long = {
-    collisions
+  /**
+   * What percentage of accidents had alcohol as a contributing factor?
+   */
+  def problem2(collisions: DataFrame): Double = {
+    val numTotalAccidents = collisions.count()
+    val numAlcoholRelatedAccidents = collisions
       .filter("CONTRIBUTING_FACTOR_VEHICLE_1 == 'Alcohol Involvement' or " +
         "CONTRIBUTING_FACTOR_VEHICLE_2 == 'Alcohol Involvement' or " +
         "CONTRIBUTING_FACTOR_VEHICLE_3 == 'Alcohol Involvement' or " +
         "CONTRIBUTING_FACTOR_VEHICLE_4 == 'Alcohol Involvement' or " +
         "CONTRIBUTING_FACTOR_VEHICLE_5 == 'Alcohol Involvement'")
       .count()
+    (numAlcoholRelatedAccidents * 100) / numTotalAccidents.toDouble
   }
 
   /**

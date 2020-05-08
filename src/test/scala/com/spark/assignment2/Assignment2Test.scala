@@ -100,19 +100,19 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     }
   }
 
-  private def loadCrashes: DataFrame = {
+  private def nycMvCrashesDFParquet: DataFrame = {
     spark.read.parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH).cache()
   }
 
-  private def loadPersons: DataFrame = {
+  private def nycMvPersonsDFParquet: DataFrame = {
     spark.read.parquet(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH).cache()
   }
 
-  private def loadVehicles: DataFrame = {
+  private def nycMvVehiclesDFParquet: DataFrame = {
     spark.read.parquet(NYC_MV_COLLISIONS_VEHICLES_PARQUET_PATH).cache()
   }
 
-  private def loadTreeCensus: DataFrame = {
+  private def nycTreeCensusDFParquet: DataFrame = {
     spark.read.parquet(NYC_TREE_CENSUS_PARQUET_PATH).cache()
   }
 
@@ -131,15 +131,14 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
     */
   test("What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?") {
-    Assignment2.problem1(loadCrashes)
+    Assignment2.problem1(nycMvCrashesDFParquet)
   }
 
   /**
     * What percentage of accidents had alcohol as a contributing factor?
     */
-  test("What percentage of accidents had alcohol as a contributing factor?") {
-//    Assignment1.problem2(tripDataRdd) must equal(1069)
-    println(Assignment2.problem2(loadCrashes))
+  test("Percentage of accidents where alcohol was a contributing factor") {
+    Assignment2.problem2(nycMvCrashesDFParquet) must equal (1.0052881751979235 +- 0.0003)
   }
 
   /**
@@ -154,7 +153,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       Row("Windshield Inadequate", 69)
     )
 
-    Assignment2.problem3(loadCrashes) must equal(expectedData)
+    Assignment2.problem3(nycMvCrashesDFParquet) must equal(expectedData)
   }
 //
 //  /**
