@@ -53,28 +53,35 @@ object Assignment2 {
   }
 
   /**
-   * Which zip code had the largest number of non fatal and fatal accidents?
+   * Which zip code had the largest number of nonfatal and fatal accidents?
    */
   def problem4(collisions: DataFrame): Seq[Row] = {
-    val modifiedCollisionsDF = collisions
+    // Remove rows with null zip codes
+    val modifiedCollisionsDF = collisions.filter("ZIP_CODE != 'null'")
+
+    // Convert columns needed for query from string to integer datatype
+    val modifiedCollisionsDF1 = modifiedCollisionsDF
       .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
       .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
       .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
       .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
 
-    val modifiedCollisionsDF1 = modifiedCollisionsDF.withColumn("TOTAL_INJURED_OR_KILLED",
+    // Create new column "TOTAL_INJURED_OR_KILLED", which is the sum of all nonfatal and fatal injuries for each accident
+    val modifiedCollisionsDF2 = modifiedCollisionsDF1.withColumn("TOTAL_INJURED_OR_KILLED",
       col("NUMBER_OF_PERSONS_INJURED") + col("NUMBER_OF_PERSONS_KILLED")
         + col("NUMBER_OF_PEDESTRIANS_INJURED") + col("NUMBER_OF_PEDESTRIANS_KILLED")
         + col("NUMBER_OF_CYCLIST_INJURED") + col("NUMBER_OF_CYCLIST_KILLED")
         + col("NUMBER_OF_MOTORIST_INJURED") + col("NUMBER_OF_MOTORIST_KILLED"))
 
-    //TODO remove rows with null zip codes
-
-    val totalInjuriesAndFatalitiesByZipCode = modifiedCollisionsDF1
+    // Get the total number of nonfatal and fatal injuries per zip code by first performing a group by zip code.
+    // then use the agg and sum functions to sum up the values in the TOTAL_INJURED_OR_KILLED column per zip code.
+    // Finally, store the computed output per zip code in a column aliased as TOTAL_INJURIES_AND_FATALITIES
+    val totalInjuriesAndFatalitiesByZipCode = modifiedCollisionsDF2
       .groupBy(col("ZIP_CODE"))
       .agg(sum(col("TOTAL_INJURED_OR_KILLED")).alias("TOTAL_INJURIES_AND_FATALITIES"))
 
-    totalInjuriesAndFatalitiesByZipCode.orderBy(desc("TOTAL_INJURIES_AND_FATALITIES")).head(5).toSeq
+    // Order the results by TOTAL_INJURIES_AND_FATALITIES in descending order
+    totalInjuriesAndFatalitiesByZipCode.orderBy(desc("TOTAL_INJURIES_AND_FATALITIES")).head(3).toSeq
   }
 
 

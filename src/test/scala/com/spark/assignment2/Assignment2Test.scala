@@ -163,13 +163,13 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   }
 
   /**
-   * Which zip code had the largest number of non fatal and fatal accidents?
+   * Which zip code had the largest number of nonfatal and fatal accidents?
    */
-  test("Zip codes with most non fatal and fatal accidents") {
+  test("Zip codes with most nonfatal and fatal accidents") {
     val expected = Array(
-      Row("null", 292946),
       Row("11207", 14794),
-      Row("11203", 11546)
+      Row("11203", 11546),
+      Row("11236", 10883)
     )
 
     Assignment2.problem4(nycMvCrashesDFParquet) must equal(expected)
