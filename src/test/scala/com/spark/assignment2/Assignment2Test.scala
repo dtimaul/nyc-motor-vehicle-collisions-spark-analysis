@@ -130,8 +130,14 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   /**
     * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
     */
-  test("What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?") {
-    Assignment2.problem1(nycMvCrashesDFParquet)
+  test("Time of day with the most cyclist injures or deaths caused by a motor vehicle collision?") {
+    val expected = Array(
+      Row("18:00", 476),
+      Row("17:00", 420),
+      Row("19:00", 411)
+    )
+
+    Assignment2.problem1(nycMvCrashesDFParquet) must equal (expected)
   }
 
   /**
@@ -145,24 +151,17 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     * What is the top five most frequent contributing factors for accidents in NYC?
     */
   test("Top five most frequent contributing factors for accidents in NYC") {
-    val expectedData = Array(
+    val expected = Array(
+      Row("Unspecified", 604571),
+      Row("Driver Inattention/Distraction", 313879),
+      Row("Failure to Yield Right-of-Way", 95574),
       Row("Following Too Closely", 84660),
-      Row("Traffic Control Disregarded", 25342),
-      Row("Driverless/Runaway Vehicle", 849),
-      Row("Accelerator Defective", 811),
-      Row("Windshield Inadequate", 69)
+      Row("Backing Unsafely", 63847)
     )
 
-    Assignment2.problem3(nycMvCrashesDFParquet) must equal(expectedData)
+    Assignment2.problem3(nycMvCrashesDFParquet) must equal(expected)
   }
-//
-//  /**
-//   * Which specific location sees the most accidents in NYC?
-//   */
-//  test("Which specific location sees the most accidents in NYC?") {
-//    Assignment1.problem4(tripDataRdd) must equal("94107")
-//  }
-//
+
 //  /**
 //   * For each individual, get the individual age and make of their car.
 //   */
@@ -176,4 +175,17 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
 //  test("Which vehicle year and make had the most crashes?") {
 //    Assignment1.problem6(tripDataRdd) must equal(354152)
 //  }
+
+  /**
+   * Which zip code had the largest number of non fatal and fatal accidents?
+   */
+  test("Zip codes with most non fatal and fatal accidents") {
+    val expected = Array(
+      Row("null", 292946),
+      Row("11207", 14794),
+      Row("11203", 11546)
+    )
+
+      Assignment2.problem8(nycMvCrashesDFParquet) must equal(expected)
+    }
 }
