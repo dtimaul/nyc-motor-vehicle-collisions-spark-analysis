@@ -13,8 +13,14 @@ object Assignment2 {
     collisions.select("CRASH_DATE")
   }
 
-  def problem2(collisions: DataFrame): DataFrame = {
-    collisions.select("CRASH_DATE")
+  def problem2(collisions: DataFrame): Long = {
+    collisions
+      .filter("CONTRIBUTING_FACTOR_VEHICLE_1 == 'Alcohol Involvement' or " +
+        "CONTRIBUTING_FACTOR_VEHICLE_2 == 'Alcohol Involvement' or " +
+        "CONTRIBUTING_FACTOR_VEHICLE_3 == 'Alcohol Involvement' or " +
+        "CONTRIBUTING_FACTOR_VEHICLE_4 == 'Alcohol Involvement' or " +
+        "CONTRIBUTING_FACTOR_VEHICLE_5 == 'Alcohol Involvement'")
+      .count()
   }
 
   /**
