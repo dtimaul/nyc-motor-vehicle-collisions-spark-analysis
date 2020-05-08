@@ -27,31 +27,6 @@ object Assignment2 {
   }
 
   /**
-   * Which zip code had the largest number of non fatal and fatal accidents?
-   */
-  def problem8(collisions: DataFrame): Seq[Row] = {
-    val modifiedCollisionsDF = collisions
-      .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
-      .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
-
-    val modifiedCollisionsDF1 = modifiedCollisionsDF.withColumn("TOTAL_INJURED_OR_KILLED",
-          col("NUMBER_OF_PERSONS_INJURED") + col("NUMBER_OF_PERSONS_KILLED")
-            + col("NUMBER_OF_PEDESTRIANS_INJURED") + col("NUMBER_OF_PEDESTRIANS_KILLED")
-            + col("NUMBER_OF_CYCLIST_INJURED") + col("NUMBER_OF_CYCLIST_KILLED")
-            + col("NUMBER_OF_MOTORIST_INJURED") + col("NUMBER_OF_MOTORIST_KILLED"))
-
-    val totalInjuriesAndFatalitiesByZipCode = modifiedCollisionsDF1
-      .groupBy(col("ZIP_CODE"))
-      .agg(sum(col("TOTAL_INJURED_OR_KILLED")).alias("TOTAL_INJURIES_AND_FATALITIES"))
-
-
-    totalInjuriesAndFatalitiesByZipCode.orderBy(desc("TOTAL_INJURIES_AND_FATALITIES")).head(5).toSeq
-
-  }
-
-  /**
    * What percentage of accidents had alcohol as a contributing factor?
    */
   def problem2(collisions: DataFrame): Double = {
@@ -77,9 +52,31 @@ object Assignment2 {
         .head(5)
   }
 
-  def problem4(collisions: DataFrame): DataFrame = {
-    collisions.select("CRASH_DATE")
+  /**
+   * Which zip code had the largest number of non fatal and fatal accidents?
+   */
+  def problem4(collisions: DataFrame): Seq[Row] = {
+    val modifiedCollisionsDF = collisions
+      .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
+      .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
+      .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
+      .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
+
+    val modifiedCollisionsDF1 = modifiedCollisionsDF.withColumn("TOTAL_INJURED_OR_KILLED",
+      col("NUMBER_OF_PERSONS_INJURED") + col("NUMBER_OF_PERSONS_KILLED")
+        + col("NUMBER_OF_PEDESTRIANS_INJURED") + col("NUMBER_OF_PEDESTRIANS_KILLED")
+        + col("NUMBER_OF_CYCLIST_INJURED") + col("NUMBER_OF_CYCLIST_KILLED")
+        + col("NUMBER_OF_MOTORIST_INJURED") + col("NUMBER_OF_MOTORIST_KILLED"))
+
+    //TODO remove rows with null zip codes
+
+    val totalInjuriesAndFatalitiesByZipCode = modifiedCollisionsDF1
+      .groupBy(col("ZIP_CODE"))
+      .agg(sum(col("TOTAL_INJURED_OR_KILLED")).alias("TOTAL_INJURIES_AND_FATALITIES"))
+
+    totalInjuriesAndFatalitiesByZipCode.orderBy(desc("TOTAL_INJURIES_AND_FATALITIES")).head(5).toSeq
   }
+
 
   def problem5(collisions: DataFrame): DataFrame = {
     collisions.select("CRASH_DATE")

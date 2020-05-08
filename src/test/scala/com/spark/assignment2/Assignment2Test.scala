@@ -162,6 +162,19 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     Assignment2.problem3(nycMvCrashesDFParquet) must equal(expected)
   }
 
+  /**
+   * Which zip code had the largest number of non fatal and fatal accidents?
+   */
+  test("Zip codes with most non fatal and fatal accidents") {
+    val expected = Array(
+      Row("null", 292946),
+      Row("11207", 14794),
+      Row("11203", 11546)
+    )
+
+    Assignment2.problem4(nycMvCrashesDFParquet) must equal(expected)
+  }
+
 //  /**
 //   * For each individual, get the individual age and make of their car.
 //   */
@@ -176,16 +189,5 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
 //    Assignment1.problem6(tripDataRdd) must equal(354152)
 //  }
 
-  /**
-   * Which zip code had the largest number of non fatal and fatal accidents?
-   */
-  test("Zip codes with most non fatal and fatal accidents") {
-    val expected = Array(
-      Row("null", 292946),
-      Row("11207", 14794),
-      Row("11203", 11546)
-    )
 
-      Assignment2.problem8(nycMvCrashesDFParquet) must equal(expected)
-    }
 }
