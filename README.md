@@ -1,5 +1,12 @@
 ## Introduction
-Traffic accidents are a fact of life as they are constantly occuring every day, hour, and minute, leading to tremendous loss of life and causing injuries to millions of people and destruction of public and private property. According to US car accidents statistics, there were almost 6 million accidents in the country in 2018 which led to the death of nearly 37,000 people and injuries to another 3 million people. In terms of loss to private and personal property, the cost to society is around $300 billion per year. For this assignment, we will use Apache Spark to analyze the motor vehicle collisions in New York City (NYC). Our goal is to gain additional insights into the causes of accidents in the Big Apple and how we can help to prevent them. See SENG_5709_Assignment_2.pdf for more information on the analytical questions that were answered and how Spark was used to calculate them.
+Driving is one of the most common yet dangerous tasks that people perform every day. According to the NHTSA, there is an average of 6 million accidents in the U.S. per year, resulting in over 2.35 million injuries and 37,000 deaths.
+  Additionally, road crashes cost the U.S. $230.6 billion per year.  
+  There are various factors that can contribute to accidents such as distracted driving, speeding, poor weather conditions, and alcohol involvement.  
+  However, using these factors and additional statistics, we can better predict the cause of accidents and put laws and procedures in place to help minimize the number of accidents. For this assignment we will use Apache Spark to analyze the motor vehicle collisions in New York City (NYC). Our goal is to gain additional insights into the causes of accidents in the Big Apple and how we can help to prevent them.
+
+## Datasets
+The following datasets were used for our analysis, with the NYC Motor Vehicle Collisions - Crashes being used for a majority of the analysis.  
+All of the datasets were obtained from NYC OpenData in CSV format and contain the most up to date motor vehicle collision information available to the public.
 
 ## Project Overview
 
