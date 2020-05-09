@@ -17,7 +17,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     * NOTE: If you use this, you must terminate your test manually.
     * OTHER NOTE: You should only use this if you run a test individually.
     */
-  val BLOCK_ON_COMPLETION = false;
+  val BLOCK_ON_COMPLETION = true;
 
   // Paths to our data.
   val NYC_MV_COLLISIONS_CRASHES_PATH = "data/NYC_Motor_Vehicle_Collisions_Crashes.csv"

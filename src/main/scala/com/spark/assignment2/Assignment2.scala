@@ -1,9 +1,9 @@
 package com.spark.assignment2
 
 import java.time.format.DateTimeFormatter
-import org.apache.spark.sql.{DataFrame, Row}
+
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.IntegerType
+import org.apache.spark.sql.{DataFrame, Row}
 
 object Assignment2 {
   private val timestampFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
@@ -112,7 +112,7 @@ object Assignment2 {
     // Next, perform a groupBy on the collisions DataFrame to get the number of accidents per zip code
     val accidentsPerZipCode = collisions.groupBy("ZIP_CODE").agg(count(col("ZIP_CODE")).alias("TOTAL_CRASHES"))
 
-    // Join the collisions DataFrame with the treeCensus DataFrame
+    // Inner equi-join the collisions DataFrame with the treeCensus DataFrame
     accidentsPerZipCode.join(treesPerZipCode, "ZIP_CODE").orderBy(desc("TOTAL_CRASHES")).head(5)
   }
 
