@@ -2,25 +2,26 @@
 Traffic accidents are a fact of life as they are constantly occuring every day, hour, and minute, leading to tremendous loss of life and causing injuries to millions of people and destruction of public and private property. According to US car accidents statistics, there were almost 6 million accidents in the country in 2018 which led to the death of nearly 37,000 people and injuries to another 3 million people. In terms of loss to private and personal property, the cost to society is around $300 billion per year. For this assignment we will use Apache Spark to analyze the motor vehicle collisions in New York City (NYC). Our goal is to gain additional insights into the causes of accidents in the Big Apple and how we can help to prevent them.
 
 ## Datasets
-- NYC Motor Vehicle Collisions - Crashes: Contains details about the motor vehicle collisions in
+- **NYC Motor Vehicle Collisions - Crashes**: Contains details about the motor vehicle collisions in
 NYC from July 2012 to February 2020. The data was extracted from police reports (form MV104-AN)
 that were filed at the time of the crash. A form MV104-AN is only filed in the case where an individual
 is injured or killed, or when the damage caused by the accident is $1,000 or greater. This dataset has
 29 columns, and 1.65 Million rows. Each row includes details about a specific motor vehicle collision.
-- NYC Motor Vehicle Crashes - Individual Information: Contains information about each person
+- **NYC Motor Vehicle Crashes - Individual Information**: Contains information about each person
 that was involved in a crash in NYC from February 2014 to May 2020 and a police report MV104-AN
 was filed. This dataset has 3.92M rows and 22 columns. Each row represents a person such as a driver,
 occupant, pedestrian, and bicyclist involved in a crash, which can be tied back to a specific crash in the
 NYC Motor Vehicle Collisions - Crashes dataset. Multiple individuals can be involved in a single crash.
-- NYC Motor Vehicle Crashes - Vehicle Information: Contains information about each vehicle
+- **NYC Motor Vehicle Crashes - Vehicle Information**: Contains information about each vehicle
 that was involved in a crash in NYC from September 2012 to May 2020 and a police report MV104-AN
 was filed. This dataset has 3.35M rows and 25 columns. Each row represents the vehicle information
 for a specific crash, which can also be tied back to the NYC Motor Vehicle Collisions - Crashes dataset.
 Multiple vehicles can be involved in a single crash.
-- 2015 NYC Tree Census: Contains detailed information on the trees living throughout NYC collected
+- **2015 NYC Tree Census** Contains detailed information on the trees living throughout NYC collected
 by the NYC parks and recreation board.
-4 Analytic Questions
-4.1 NYC Motor Vehicle Collisions and 2015 NYC Tree Census Dataset Questions
+
+## Analytic Questions
+### NYC Motor Vehicle Collisions and 2015 NYC Tree Census Dataset Questions
 - What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision? In order
 to answer this question, we will need to add the number of cyclist injured plus the number of cyclist
 deaths for each row and store the result in a new column. Next, we will need to group by crash time
