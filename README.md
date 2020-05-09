@@ -8,34 +8,6 @@ Traffic accidents are a fact of life as they are constantly occuring every day, 
 - Build tool: [SBT](https://www.scala-sbt.org/) 
 - Testing Framework: [Scalatest](http://www.scalatest.org/)
 
-## Code Overview
-
-### Driver
-
-`ExampleDriver` is a Spark `Driver` (or coordinator) that will run a Spark application
-
-It defines: 
-- a 'main' class that allows the Spark appliction
-to be run using `spark-submit` 
-- a function `readData` to load data from a datasource
-- a function `process` to apply transformations to the data
-
-Functions `readData' and `process` take as an argument a `Spark` object. This Spark object
-will be different if the `ExampleDriver` is run on a real cluster or in the unit tests in the project.
-
-### Test
-
-`ExampleDriverTest` is a test for the Spark driver. It contains two tests,
-one to assert we can read data and the other that we can apply a transformation
-to the data.
-
-## IDE Setup
-
-- Download [Intellij IDEA Community Edition](https://www.jetbrains.com/idea/download/#section=mac)
-- Install the `Scala` plugin in intellij ([plugin install instructions](https://www.jetbrains.com/help/idea/managing-plugins.html))
-- From Intellij, open the `build.sbt` file in this directory with 'File' -> 'Open'. Opening the `build.sbt` file will ensure Intellij loads the project correctly
-- When prompted, choose 'Open as Project'
-
 ## Running Tests
 
 ### From Intellij
