@@ -12,12 +12,8 @@ object Assignment2 {
    * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
    */
   def problem1(collisions: DataFrame): Seq[Row] = {
-    // Convert columns needed for query from string to integer datatype
-    val modifiedCollisionsDF = collisions
-      .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
-
-    modifiedCollisionsDF
+    // Filter accidents where there was at least one cyclist injury or fatality
+    collisions
       .filter("NUMBER_OF_CYCLIST_INJURED > 0 or NUMBER_OF_CYCLIST_KILLED > 0")
       .groupBy("CRASH_TIME")
       .count()
@@ -65,15 +61,8 @@ object Assignment2 {
     // Remove rows with null zip codes
     val modifiedCollisionsDF = collisions.filter(col("ZIP_CODE").isNotNull)
 
-    // Convert columns needed for query from string to integer datatype
-    val modifiedCollisionsDF1 = modifiedCollisionsDF
-      .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
-      .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
-
     // Create new column "TOTAL_INJURED_OR_KILLED", which is the sum of all nonfatal and fatal injuries for each accident
-    val modifiedCollisionsDF2 = modifiedCollisionsDF1.withColumn("TOTAL_INJURED_OR_KILLED",
+    val modifiedCollisionsDF1 = modifiedCollisionsDF.withColumn("TOTAL_INJURED_OR_KILLED",
       col("NUMBER_OF_PERSONS_INJURED") + col("NUMBER_OF_PERSONS_KILLED")
         + col("NUMBER_OF_PEDESTRIANS_INJURED") + col("NUMBER_OF_PEDESTRIANS_KILLED")
         + col("NUMBER_OF_CYCLIST_INJURED") + col("NUMBER_OF_CYCLIST_KILLED")
@@ -82,7 +71,7 @@ object Assignment2 {
     // Get the total number of nonfatal and fatal injuries per zip code by first performing a group by zip code.
     // then use the agg and sum functions to sum up the values in the TOTAL_INJURED_OR_KILLED column per zip code.
     // Finally, store the computed output per zip code in a column aliased as TOTAL_INJURIES_AND_FATALITIES
-    val totalInjuriesAndFatalitiesByZipCode = modifiedCollisionsDF2
+    val totalInjuriesAndFatalitiesByZipCode = modifiedCollisionsDF1
       .groupBy(col("ZIP_CODE"))
       .agg(sum(col("TOTAL_INJURED_OR_KILLED")).alias("TOTAL_INJURIES_AND_FATALITIES"))
 
@@ -128,7 +117,7 @@ object Assignment2 {
   }
 
   /**
-   * What is the average number of crashes per year in NYC between the years 2012 and 2020?
+   * What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
    */
   def problem7(collisions: DataFrame): DataFrame = {
     // First create a new column with only the year for each accident

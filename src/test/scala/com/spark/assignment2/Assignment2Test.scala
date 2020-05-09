@@ -3,9 +3,12 @@ package com.spark.assignment2
 import java.nio.file.{Files, Paths}
 
 import org.apache.spark.sql._
+import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.types.IntegerType
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+
 import scala.concurrent.duration._
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
@@ -57,8 +60,9 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       }
 
       nycMvCrashesDFColumnsRenamed.write
-        .mode(SaveMode.Ignore)
+        .mode(SaveMode.Overwrite)
         .option("compression", "none")
+        .partitionBy("zip_code")
         .parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH)
     }
     if (!Files.exists(Paths.get(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH))) {
@@ -69,7 +73,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       }
 
       nycMvPersonsDFColumnsRenamed.write
-        .mode(SaveMode.Ignore)
+        .mode(SaveMode.Overwrite)
         .option("compression", "none")
         .parquet(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH)
     }
@@ -81,7 +85,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       }
 
       nycMvVehiclesDFColumnsRenamed.write
-        .mode(SaveMode.Ignore)
+        .mode(SaveMode.Overwrite)
         .option("compression", "none")
         .parquet(NYC_MV_COLLISIONS_VEHICLES_PARQUET_PATH)
     }
@@ -93,14 +97,19 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       }
 
       nycTreeCensusDFColumnsRenamed.write
-        .mode(SaveMode.Ignore)
+        .mode(SaveMode.Overwrite)
         .option("compression", "none")
         .parquet(NYC_TREE_CENSUS_PARQUET_PATH)
     }
   }
 
   private def nycMvCrashesDFParquet: DataFrame = {
-    spark.read.parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH).cache()
+    spark.read.parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH)
+      .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
+      .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
+      .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
+      .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
+      .cache()
   }
 
   private def nycMvPersonsDFParquet: DataFrame = {
@@ -203,9 +212,9 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   }
 
   /**
-   * What is the average number of crashes per year in NYC between the years 2012 and 2020?
+   * What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
    */
-  test("Average number of crashes per year") {
+  test("Average number of people involved in crashes per year") {
     Assignment2.problem7(nycMvCrashesDFParquet)
   }
 }
