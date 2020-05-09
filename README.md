@@ -1,17 +1,5 @@
-# Spark Example
-
-This project contains for running and testing applications locally using Apache Spark.
-
-Apache Spark is fully testable locally using standard unit testing frameworks.
-
-Unit testing is accepted engineering best practice, but is often not used.
-Instead, a developer will either work from the Spark shell, copying code back
-to their IDE when it works and piece it together, or develop locally and build 
-a jar to deploy to the cluster for testing on the full dataset. These options are
-time consuming, error prone, and not scalable beyond a single developer.
-
-Writing unit tests allows you to test a variety of data, catch regressions, and 
-greatly reduce the iteration cycle so it's possible to get more done with better quality.
+## Introduction
+Traffic accidents are a fact of life as they are constantly occuring every day, hour, and minute, leading to tremendous loss of life and causing injuries to millions of people and destruction of public and private property. According to US car accidents statistics, there were almost 6 million accidents in the country in 2018 which led to the death of nearly 37,000 people and injuries to another 3 million people. In terms of loss to private and personal property, the cost to society is around $300 billion per year. For this assignment, we will use Apache Spark to analyze the motor vehicle collisions in New York City (NYC). Our goal is to gain additional insights into the causes of accidents in the Big Apple and how we can help to prevent them. See SENG_5709_Assignment_2.pdf for more information on the analytical questions that were answered and how Spark was used to calculate them.
 
 ## Project Overview
 
@@ -19,34 +7,6 @@ greatly reduce the iteration cycle so it's possible to get more done with better
 - Framework: [Apache Spark](https://spark.apache.org/)
 - Build tool: [SBT](https://www.scala-sbt.org/) 
 - Testing Framework: [Scalatest](http://www.scalatest.org/)
-
-## Code Overview
-
-### Driver
-
-`ExampleDriver` is a Spark `Driver` (or coordinator) that will run a Spark application
-
-It defines: 
-- a 'main' class that allows the Spark appliction
-to be run using `spark-submit` 
-- a function `readData` to load data from a datasource
-- a function `process` to apply transformations to the data
-
-Functions `readData' and `process` take as an argument a `Spark` object. This Spark object
-will be different if the `ExampleDriver` is run on a real cluster or in the unit tests in the project.
-
-### Test
-
-`ExampleDriverTest` is a test for the Spark driver. It contains two tests,
-one to assert we can read data and the other that we can apply a transformation
-to the data.
-
-## IDE Setup
-
-- Download [Intellij IDEA Community Edition](https://www.jetbrains.com/idea/download/#section=mac)
-- Install the `Scala` plugin in intellij ([plugin install instructions](https://www.jetbrains.com/help/idea/managing-plugins.html))
-- From Intellij, open the `build.sbt` file in this directory with 'File' -> 'Open'. Opening the `build.sbt` file will ensure Intellij loads the project correctly
-- When prompted, choose 'Open as Project'
 
 ## Running Tests
 
