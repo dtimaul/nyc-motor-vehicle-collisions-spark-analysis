@@ -152,11 +152,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     */
   test("Top five most frequent contributing factors for accidents in NYC") {
     val expected = Array(
-      Row("Unspecified", 604571),
       Row("Driver Inattention/Distraction", 313879),
       Row("Failure to Yield Right-of-Way", 95574),
       Row("Following Too Closely", 84660),
-      Row("Backing Unsafely", 63847)
+      Row("Backing Unsafely", 63847),
+      Row("Other Vehicular", 52700)
     )
 
     Assignment2.problem3(nycMvCrashesDFParquet) must equal(expected)
@@ -175,19 +175,32 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
     Assignment2.problem4(nycMvCrashesDFParquet) must equal(expected)
   }
 
-//  /**
-//   * For each individual, get the individual age and make of their car.
-//   */
-//  test("For each individual, get the individual age and make of their car.") {
-//    Assignment1.problem5(tripDataRdd) must equal(920)
-//  }
-//
-//  /**
-//   * Which vehicle year and make had the most crashes?
-//   */
-//  test("Which vehicle year and make had the most crashes?") {
-//    Assignment1.problem6(tripDataRdd) must equal(354152)
-//  }
+  /**
+   * Which vehicle make, model, and year was involved in the most accidents?
+   */
+  test("Vehicle make, model, and year with the most accidents") {
+    val expected = Array(
+      Row("TOYT -CAR/SUV", "TOYT CAM", 2015, 565),
+      Row("HOND -CAR/SUV", "van", 2004, 1)
+    )
+
+    Assignment2.problem5(nycMvVehiclesDFParquet) must equal(expected)
+  }
+
+  /**
+   * How do the number of collisions in an area of NYC correlate to
+   * the number of trees in the area?
+   */
+  test("Number of collisions compared to the number of trees by zip code") {
+    Assignment2.problem6(nycMvCrashesDFParquet, nycTreeCensusDFParquet)
+  }
+
+  /**
+   * What is the average number of crashes per year in NYC between the years 2012 and 2020?
+   */
+  test("Average number of crashes per year") {
+    Assignment2.problem7(nycMvCrashesDFParquet)
+  }
 
 
 }

@@ -1,6 +1,5 @@
 package com.spark.assignment2
 
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import org.apache.spark.sql.{DataFrame, Row}
@@ -14,6 +13,7 @@ object Assignment2 {
    * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
    */
   def problem1(collisions: DataFrame): Seq[Row] = {
+    // Convert columns needed for query from string to integer datatype
     val modifiedCollisionsDF = collisions
       .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
       .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
@@ -31,6 +31,8 @@ object Assignment2 {
    */
   def problem2(collisions: DataFrame): Double = {
     val numTotalAccidents = collisions.count()
+
+    // Filter accidents where alcohol involvement was a contributing factor for any of the vehicles involved in the accident
     val numAlcoholRelatedAccidents = collisions
       .filter("CONTRIBUTING_FACTOR_VEHICLE_1 == 'Alcohol Involvement' or " +
         "CONTRIBUTING_FACTOR_VEHICLE_2 == 'Alcohol Involvement' or " +
@@ -45,7 +47,12 @@ object Assignment2 {
    * What is the top five most frequent contributing factors for accidents in NYC?
    */
   def problem3(collisions: DataFrame): Seq[Row] = {
-      collisions
+    // Filter out rows with an unspecified contributing factor
+    val collisionsDFModified = collisions.filter(col("CONTRIBUTING_FACTOR_VEHICLE_1") =!= "Unspecified")
+
+    // Perform a groupBy CONTRIBUTING_FACTOR_VEHICLE_1, then count the number of occurrences of each contributing factor.
+    // Finally, order by count and get the top 5
+    collisionsDFModified
         .groupBy("CONTRIBUTING_FACTOR_VEHICLE_1")
         .count()
         .orderBy(desc("count"))
@@ -57,7 +64,7 @@ object Assignment2 {
    */
   def problem4(collisions: DataFrame): Seq[Row] = {
     // Remove rows with null zip codes
-    val modifiedCollisionsDF = collisions.filter("ZIP_CODE != 'null'")
+    val modifiedCollisionsDF = collisions.filter(col("ZIP_CODE").isNotNull)
 
     // Convert columns needed for query from string to integer datatype
     val modifiedCollisionsDF1 = modifiedCollisionsDF
@@ -84,19 +91,43 @@ object Assignment2 {
     totalInjuriesAndFatalitiesByZipCode.orderBy(desc("TOTAL_INJURIES_AND_FATALITIES")).head(3).toSeq
   }
 
+  /**
+   * Which vehicle make, model, and year was involved in the most accidents? Which had the least accidents?
+   */
+  def problem5(vehicles: DataFrame): Seq[Row] = {
+    // Remove any rows with null values for vehicle make, model, and year
+    val vehiclesDFModified = vehicles.filter(col("VEHICLE_MAKE").isNotNull && col("VEHICLE_MODEL").isNotNull)
 
-  def problem5(collisions: DataFrame): DataFrame = {
-    collisions.select("CRASH_DATE")
+    // Get the vehicle make, model, and year with the most accidents
+    val vehicleWMostAccidents = vehiclesDFModified.groupBy("VEHICLE_MAKE", "VEHICLE_MODEL", "VEHICLE_YEAR").count().orderBy(desc("count")).first()
+
+    // Get the vehicle make, model, and year with the least accidents
+    val vehicleWLeastAccidents = vehiclesDFModified.groupBy("VEHICLE_MAKE", "VEHICLE_MODEL", "VEHICLE_YEAR").count().orderBy(asc("count")).first()
+
+    Seq[Row] (
+      vehicleWMostAccidents,
+      vehicleWLeastAccidents
+    )
   }
 
-  def problem6(collisions: DataFrame): DataFrame = {
+  /**
+   * How do the number of collisions in an area of NYC correlate to
+   * the number of trees in the area?
+   */
+  def problem6(collisions: DataFrame, treeCensus: DataFrame): DataFrame = {
+    // First, perform a groupBy on the treeCensus DataFrame to get the number of trees per zip code
+
+    // Next, perform a groupBy on the collisions DataFrame to get the number of accidents per zip code
+
+    // Join the collisions DataFrame with the treeCensus DataFrame
     collisions.select("CRASH_DATE")
+
   }
 
+  /**
+   * What is the average number of crashes per year in NYC between the years 2012 and 2020?
+   */
   def problem7(collisions: DataFrame): DataFrame = {
     collisions.select("CRASH_DATE")
   }
-
-
-
 }
