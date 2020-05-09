@@ -46,8 +46,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   val csvReadOptions: Map[String, String] =
     Map("inferSchema" -> true.toString, "header" -> true.toString)
 
-  // Create parquet datasets that are used in later tests
-  // TODO: Add option to parse date timestamps
+  // Write DataFrames to external storage in Parquet format
   override def beforeAll() {
     if (!Files.exists(Paths.get(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH))) {
       def nycMvCrashesDF: DataFrame = spark.read.options(csvReadOptions).csv(NYC_MV_COLLISIONS_CRASHES_PATH)
@@ -192,7 +191,15 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
    * the number of trees in the area?
    */
   test("Number of collisions compared to the number of trees by zip code") {
-    Assignment2.problem6(nycMvCrashesDFParquet, nycTreeCensusDFParquet)
+    val expected = Array(
+      Row("11207", 20798, 8634),
+      Row("11101", 16000, 3387),
+      Row("10019", 15311, 1715),
+      Row("10036", 14786, 894),
+      Row("10016", 14780, 1872)
+    )
+
+    Assignment2.problem6(nycMvCrashesDFParquet, nycTreeCensusDFParquet) must equal(expected)
   }
 
   /**
@@ -201,6 +208,4 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   test("Average number of crashes per year") {
     Assignment2.problem7(nycMvCrashesDFParquet)
   }
-
-
 }

@@ -1,7 +1,6 @@
 package com.spark.assignment2
 
 import java.time.format.DateTimeFormatter
-
 import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.IntegerType
@@ -114,20 +113,26 @@ object Assignment2 {
    * How do the number of collisions in an area of NYC correlate to
    * the number of trees in the area?
    */
-  def problem6(collisions: DataFrame, treeCensus: DataFrame): DataFrame = {
-    // First, perform a groupBy on the treeCensus DataFrame to get the number of trees per zip code
+  def problem6(collisions: DataFrame, treeCensus: DataFrame): Seq[Row] = {
+    // First rename the postcode column to ZIP_CODE on the treeCensus DataFrame
+    val treeCensusDFModified = treeCensus.withColumn("ZIP_CODE", col("postcode"))
+
+    // Next, perform a groupBy on the treeCensus DataFrame to get the number of trees per zip code
+    val treesPerZipCode = treeCensusDFModified.groupBy("ZIP_CODE").agg(count(col("ZIP_CODE")).alias("TOTAL_TREES"))
 
     // Next, perform a groupBy on the collisions DataFrame to get the number of accidents per zip code
+    val accidentsPerZipCode = collisions.groupBy("ZIP_CODE").agg(count(col("ZIP_CODE")).alias("TOTAL_CRASHES"))
 
     // Join the collisions DataFrame with the treeCensus DataFrame
-    collisions.select("CRASH_DATE")
-
+    accidentsPerZipCode.join(treesPerZipCode, "ZIP_CODE").orderBy(desc("TOTAL_CRASHES")).head(5)
   }
 
   /**
    * What is the average number of crashes per year in NYC between the years 2012 and 2020?
    */
   def problem7(collisions: DataFrame): DataFrame = {
+    // First create a new column with only the year for each accident
+    // Next, do a group by with agg and avg function
     collisions.select("CRASH_DATE")
   }
 }
