@@ -1,11 +1,6 @@
 ## Introduction
-Traffic accidents are a fact of life as they keep happening every single day and at every minute and hour
-leading to tremendous loss of life and causing injuries to millions of people and destruction of public and
-private property. According to US car accidents statistics, there were almost 6 million accidents in the country
-in 2018 which led to the death of nearly 37,000 people and injuries to another 3 million people. In terms of
-loss to private and personal property, the cost to society is around $300 billion per year. For this assignment
-we will use Apache Spark to analyze the motor vehicle collisions in New York City (NYC). Our goal is to
-gain additional insights into the causes of accidents in the Big Apple and how we can help to prevent them.
+Traffic accidents are a fact of life as they are constantly occuring every day, hour, and minute, leading to tremendous loss of life and causing injuries to millions of people and destruction of public and private property. According to US car accidents statistics, there were almost 6 million accidents in the country in 2018 which led to the death of nearly 37,000 people and injuries to another 3 million people. In terms of loss to private and personal property, the cost to society is around $300 billion per year. For this assignment we will use Apache Spark to analyze the motor vehicle collisions in New York City (NYC). Our goal is to gain additional insights into the causes of accidents in the Big Apple and how we can help to prevent them.
+
 ## Datasets
 - NYC Motor Vehicle Collisions - Crashes: Contains details about the motor vehicle collisions in
 NYC from July 2012 to February 2020. The data was extracted from police reports (form MV104-AN)
