@@ -18,7 +18,7 @@ was filed. This dataset has 3.35M rows and 25 columns. Each row represents the v
 for a specific crash, which can also be tied back to the NYC Motor Vehicle Collisions - Crashes dataset.
 Multiple vehicles can be involved in a single crash.
 - **2015 NYC Tree Census** Contains detailed information on the trees living throughout NYC collected
-by the NYC parks and recreation board.
+by the NYC parks and recreation board in 2015.
 
 ## Analytic Questions
 ### NYC Motor Vehicle Collisions and 2015 NYC Tree Census Dataset Questions
