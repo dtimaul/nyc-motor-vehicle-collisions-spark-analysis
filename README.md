@@ -99,9 +99,20 @@ mapPartions operation.
 For this problem, we first filtered out rows with an unspecified
 contributing factor. Next, we perform a groupBy
 CONTRIBUTING_FACTOR_VEHICLE_1, then a count the number of occurrence of
-each contributing factor. Finally, we order by count and get the top 5 contributing factors.
+each contributing factor. Finally, we order by count and get the top 5
+contributing factors.
 
-Spark Visualization
+There are three stages that occur for this problem. In stage one, a
+parrallelCollectionRDD ic crated followed by a
+mapPartitionsRDD. In stage 1 we read the Parquet file from disk or memory if it
+if cached (as seen in the previous section). Next, in stage 2 a
+FileScanRDD is created, followed by a MapPartitionRDD, then another
+MapParitionsRDD. In stage 3 a shuffledRowRDD is performed because we are
+performing a group by which is a wide transformation, and thus data is
+shuffled across the cluster of nodes. Next, a MapPartsRDD is created, then
+another mapPartitionsRDD is created in the map step. Map is a narrow transormation,
+so the computations do not need to be shuffled across the cluster.
+
 ![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)
 ![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)
 ![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)
