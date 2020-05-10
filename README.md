@@ -86,7 +86,7 @@ mapPartions operation.
 
 ### 1. What is the top five most frequent contributing factors for accidents in NYC?
 
-For this problem, we first filtered out rows with an unspecified
+For this test, we first filtered out rows with an unspecified
 contributing factor. Next, we perform a groupBy
 CONTRIBUTING_FACTOR_VEHICLE_1, then a count the number of occurrence of
 each contributing factor. Finally, we order by count and get the top 5
@@ -110,19 +110,18 @@ cluster.
 
 ### 2. What percentage of accidents had alcohol as a contributing factor?
 
-For this problem, we first got the count of total accidents and stored
-in a val numTotalAccidents. Next, we filtered out accidents where
-alcohol involvement was a contributing factor for any of the vehicles
-involved in the accident ans stored the result in
-numAlcoholRelatedAccidents. Finally, we performed the following
-calculation to get the percentage.
+For this test, we first got the count of total accidents and stored in a
+val numTotalAccidents. Next, we filtered out accidents where alcohol
+involvement was a contributing factor for any of the vehicles involved
+in the accident ans stored the result in numAlcoholRelatedAccidents.
+Finally, we performed the following calculation to get the percentage.
 
 ```(numAlcoholRelatedAccidents * 100) / numTotalAccidents.toDouble ```
 
 
 ### 3. What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
 
-For this problem, we first filter out accidents where there was at least
+For this test, we first filter out accidents where there was at least
 one cyclist injury or fatality. Next, we perform a groupBy("CRASH_TIME")
 and counted the number of crashes for the various times throughout a 24
 hour period. Finally, we order by count in descending order and get the
@@ -147,16 +146,20 @@ In order to determine which vehicle make, model, and year was involved
 in the most accidents, we first remove any rows where the vehicle make,
 model, and year is null. Next, we did a groupBy("VEHICLE_MAKE",
 "VEHICLE_MODEL", "VEHICLE_YEAR") then count and sort by descending order
-and get the first value, which is the most accidents. Likewise, to the get the least
-accidents, we did the same previous steps but sort by ascending order and
-got the first value.
+and get the first value, which is the most accidents. Likewise, to get
+the least accidents, we did the same previous steps but sort by
+ascending order and got the first value.
 
 ### 6. How do the number of collisions in an area of NYC correlate to the number of trees in the area?
 
-In order to answer this question, we will need to join the NYC Motor
-Vehicle Collisions and 2015 NYC Tree Census Dataset by zip code.
-
-### 7. What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
+The NYC motor vehicle collisions - crashes and 2015 NYC tree census
+datasets were used for this test. We first rename the postcode column to
+ZIP_CODE on the treeCensus DataFrame. Next, we perform a groupBy on the
+treeCensus DataFrame to get the number of trees per zip code. We also,
+performed a groupBy on the collisions DataFrame to get the number of
+accidents per zip code. Finally, we did an inner equi-join of the
+collisions DataFrame with the treeCensus DataFrame using the "ZIP_CODE"
+collumn. Then finally, ordered by "TOTAL_CRASHES" in descending order.
 
 ## Chosen Spark API for Answering Analytical Questions
 
