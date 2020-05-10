@@ -32,17 +32,7 @@ injured, or when the damage caused by the accident is $1,000 or greater.
 This dataset has 29 columns, 1.65 Million rows, and a size of 369 MB.
 Each row includes details about a specific motor vehicle collision.
 
-### NYC Motor Vehicle Crashes - Person: [3]
-
-Contains information about each person that was involved in a crash in
-NYC from February 2014 to May 2020 and a police report MV104-AN was
-filed. This dataset has 3.92M rows, 22 columns, and a size of 641.4 MB.
-Each row represents a person such as a driver, occupant, pedestrian, and
-bicyclist involved in a crash, which can be tied back to a specific
-crash in the NYC Motor Vehicle Collisions - Crashes dataset. Multiple
-individuals can be involved in a single crash.
-
-### NYC Motor Vehicle Crashes - Vehicle: [4]
+### NYC Motor Vehicle Crashes - Vehicle: [3]
 
 Contains information about each vehicle that was involved in a crash in
 NYC from September 2012 to May 2020 and a police report MV104-AN was
@@ -51,7 +41,7 @@ Each row represents the vehicle information for a specific crash, which
 can also be tied back to the NYC Motor Vehicle Collisions - Crashes
 dataset. Multiple vehicles can be involved in a single crash.
 
-### 2015 NYC Tree Census: [5]
+### 2015 NYC Tree Census: [4]
 
 Contains detailed information on the trees living throughout NYC
 collected by the NYC parks and recreation board in 2015. This datset has
@@ -103,15 +93,16 @@ each contributing factor. Finally, we order by count and get the top 5
 contributing factors.
 
 There are three stages that occur for this problem. In stage one, a
-parrallelCollectionRDD ic crated followed by a
-mapPartitionsRDD. In stage 1 we read the Parquet file from disk or memory if it
-if cached (as seen in the previous section). Next, in stage 2 a
-FileScanRDD is created, followed by a MapPartitionRDD, then another
-MapParitionsRDD. In stage 3 a shuffledRowRDD is performed because we are
-performing a group by which is a wide transformation, and thus data is
-shuffled across the cluster of nodes. Next, a MapPartsRDD is created, then
-another mapPartitionsRDD is created in the map step. Map is a narrow transormation,
-so the computations do not need to be shuffled across the cluster.
+parrallelCollectionRDD ic crated followed by a mapPartitionsRDD. In
+stage 1 we read the Parquet file from disk or memory if it if cached (as
+seen in the previous section). Next, in stage 2 a FileScanRDD is
+created, followed by a MapPartitionRDD, then another MapParitionsRDD. In
+stage 3 a shuffledRowRDD is performed because we are performing a group
+by which is a wide transformation, and thus data is shuffled across the
+cluster of nodes. Next, a MapPartsRDD is created, then another
+mapPartitionsRDD is created in the map step. Map is a narrow
+transormation, so the computations do not need to be shuffled across the
+cluster.
 
 ![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)
 ![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)
@@ -119,22 +110,46 @@ so the computations do not need to be shuffled across the cluster.
 
 ### 2. What percentage of accidents had alcohol as a contributing factor?
 
+For this problem, we first got the count of total accidents and stored
+in a val numTotalAccidents. Next, we filtered out accidents where
+alcohol involvement was a contributing factor for any of the vehicles
+involved in the accident ans stored the result in
+numAlcoholRelatedAccidents. Finally, we performed the following
+calculation to get the percentage.
+
+```(numAlcoholRelatedAccidents * 100) / numTotalAccidents.toDouble ```
+
+
 ### 3. What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
 
-In order to answer this question, we will need to add the number of
-cyclist injured plus the number of cyclist deaths for each row and store
-the result in a new column. Next, we will need to group by crash time
-and get the crash time with the most amount of cyclist injured or
-deaths.
-
-
-In order to answer this question, We will need to do a filter and count.
+For this problem, we first filter out accidents where there was at least
+one cyclist injury or fatality. Next, we perform a groupBy("CRASH_TIME")
+and counted the number of crashes for the various times throughout a 24
+hour period. Finally, we order by count in descending order and get the
+top 3 times.
 
 ### 4. Which zip code had the largest number of nonfatal and fatal accidents?
 
+Find the zip code with the largest number of nonfatal and fatal
+accidents required several steps. First remove rows with null zip codes.
+Next create a new column "TOTAL_INJURED_OR_KILLED", which is the sum of
+all nonfatal and fatal injuries for each accident. Next, get the total
+number of nonfatal and fatal injuries per zip code by first performing a
+group by zip code. then use the agg and sum functions to sum up the
+values in the TOTAL_INJURED_OR_KILLED column per zip code. Afterwards,
+store the computed output per zip code in a column aliased as
+TOTAL_INJURIES_AND_FATALITIES. Finally, order the results by
+TOTAL_INJURIES_AND_FATALITIES in descending order and get the top 3.
+
 ### 5. Which vehicle make, model, and year was involved in the most accidents?
 
-One possible solution is to group by vehicle year and make.
+In order to determine which vehicle make, model, and year was involved
+in the most accidents, we first remove any rows where the vehicle make,
+model, and year is null. Next, we did a groupBy("VEHICLE_MAKE",
+"VEHICLE_MODEL", "VEHICLE_YEAR") then count and sort by descending order
+and get the first value, which is the most accidents. Likewise, to the get the least
+accidents, we did the same previous steps but sort by ascending order and
+got the first value.
 
 ### 6. How do the number of collisions in an area of NYC correlate to the number of trees in the area?
 
@@ -227,12 +242,7 @@ Open Data.” Motor Vehicle Collisions - Vehicles | NYC Open Data, 8 May
 2020,
 data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Vehicles/bm4k-52h4.
 
-[4] (NYPD), Police Department. “Motor Vehicle Collisions - Person: NYC
-Open Data.” Motor Vehicle Collisions - Person | NYC Open Data, 8 May
-2020,
-data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Person/f55k-p6yu.
-
-[5] Department of Parks and Recreation. “2015 Street Tree Census - Tree
+[4] Department of Parks and Recreation. “2015 Street Tree Census - Tree
 Data: NYC Open Data.” 2015 Street Tree Census - Tree Data | NYC Open
 Data, 4 Oct. 2017,
 data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh.

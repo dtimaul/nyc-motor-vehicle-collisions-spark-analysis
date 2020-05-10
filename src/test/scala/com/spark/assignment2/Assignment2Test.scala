@@ -209,11 +209,4 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
 
     Assignment2.problem6(nycMvCrashesDFParquet, nycTreeCensusDFParquet) must equal(expected)
   }
-
-  /**
-   * What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
-   */
-  test("Average number of people involved in crashes per year") {
-    Assignment2.problem7(nycMvCrashesDFParquet)
-  }
 }

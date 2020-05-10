@@ -115,13 +115,4 @@ object Assignment2 {
     // Inner equi-join the collisions DataFrame with the treeCensus DataFrame
     accidentsPerZipCode.join(treesPerZipCode, "ZIP_CODE").orderBy(desc("TOTAL_CRASHES")).head(5)
   }
-
-  /**
-   * What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
-   */
-  def problem7(collisions: DataFrame): DataFrame = {
-    // First create a new column with only the year for each accident
-    // Next, do a group by with agg and avg function
-    collisions.select("CRASH_DATE")
-  }
 }
