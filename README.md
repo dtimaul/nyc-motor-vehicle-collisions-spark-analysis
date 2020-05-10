@@ -86,13 +86,13 @@ include the following.
   replaced with underscores to avoid the invalid character errors when
   converting to Parquet. E.g. from CRASH TIME to CRASH_TIME.
 - The data types of several columns in the NYC Motor Vehicle - Crashes
-  dataset needed to casted from a string to an integer type because they
+  dataset needed to br casted from a string to an integer type because they
   will be used for numerical calculations in our query.
 
 The below Directed acyclic graph (DAG) show the operations performed
 when reading a parquet file. This operation is performed each time a
 test is ran. Spark performs a parallelize operation followed by a
-mapPartions operation.
+mapPartitions operation.
 
 ![Parquet1](data/Images/Parquet1.png)
 ![Parquet2](data/Images/Parquet2.png)
