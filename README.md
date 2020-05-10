@@ -183,6 +183,13 @@ TOTAL_INJURIES_AND_FATALITIES in descending order and get the top 3.
 
 #### Spark Internal Analysis
 
+Since we are calling the filter function right after loading the
+dataset, Spark will perform a predicate pushdown, where it will push the
+filter down to the data source and perform the filter query before
+returning the result. This improves query performance as it is
+having the data source do the work before returning the result.
+
+
 ![Problem 4](data/Images/Problem%204.png)
 ![Problem 4 stage 2](data/Images/Problem%204%20stage%202.png)
 ![Problem 4 stage 3](data/Images/Problem%204%20stage%203.png)
@@ -199,6 +206,10 @@ the least accidents, we did the same previous steps but sort by
 ascending order and got the first value.
 
 #### Spark Internal Analysis
+
+Simillar to test 4, test 5 is also performing a filter as it's first
+function in the test, so Spark will also perform a predicate pushdown as
+well.
 
 ![Problem 5](data/Images/Problem%205.png)
 ![Problem 5 Stage 3](data/Images/Problem%205%20Stage%203.png)Analysis
@@ -220,8 +231,8 @@ collumn. Then finally, ordered by "TOTAL_CRASHES" in descending order.
 There were only two parquet jobs for the other tests. However, this test
 uses two DataFrames instead of one, and thus required another job to
 read the additional data. Additionally, since a join is a wide
-transformation, shuffling needed to be performed. The code was ran on a single executor with 4 RDD Blocks,
-4 cores CPU, and 1.1 GB RAM.
+transformation, shuffling needed to be performed. The code was ran on a
+single executor with 4 RDD Blocks, 4 cores CPU, and 1.1 GB RAM.
 
 ![Problem 6 jobs](data/Images/Problem%206%20jobs.png)
 ![Problem 6 stages](data/Images/Problem%206%20stages.png)
