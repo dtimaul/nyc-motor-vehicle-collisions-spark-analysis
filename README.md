@@ -167,6 +167,13 @@ store the computed output per zip code in a column aliased as
 TOTAL_INJURIES_AND_FATALITIES. Finally, order the results by
 TOTAL_INJURIES_AND_FATALITIES in descending order and get the top 3.
 
+#### Spark Internal Analysis
+
+![Problem 4](data/Images/Problem%204.png)
+![Problem 4 stage 2](data/Images/Problem%204%20stage%202.png)
+![Problem 4 stage 3](data/Images/Problem%204%20stage%203.png)
+![Problem 4 stage 3_1](data/Images/Problem%204%20stage%203_1.png)
+
 ### 5. Which vehicle make, model, and year was involved in the most accidents?
 
 In order to determine which vehicle make, model, and year was involved
@@ -176,6 +183,12 @@ model, and year is null. Next, we did a groupBy("VEHICLE_MAKE",
 and get the first value, which is the most accidents. Likewise, to get
 the least accidents, we did the same previous steps but sort by
 ascending order and got the first value.
+
+#### Spark Internal Analysis
+
+![Problem 5](data/Images/Problem%205.png)
+![Problem 5 Stage 3](data/Images/Problem%205%20Stage%203.png)Analysis
+![Problem 5 stage 4](data/Images/Problem%205%20stage%204.png)
 
 ### 6. How do the number of collisions in an area of NYC correlate to the number of trees in the area?
 
@@ -187,6 +200,21 @@ performed a groupBy on the collisions DataFrame to get the number of
 accidents per zip code. Finally, we did an inner equi-join of the
 collisions DataFrame with the treeCensus DataFrame using the "ZIP_CODE"
 collumn. Then finally, ordered by "TOTAL_CRASHES" in descending order.
+
+#### Spark Internal Analysis
+
+There were only two parquet jobs for the other tests. However, this test
+uses two DataFrames instead of one, and thus required another job to
+read the additional data. Additionally, since a join is a wide
+transformation, shuffling needed to be performed. The code was ran on a single executor with 4 RDD Blocks,
+4 cores CPU, and 1.1 GB RAM.
+
+![Problem 6 jobs](data/Images/Problem%206%20jobs.png)
+![Problem 6 stages](data/Images/Problem%206%20stages.png)
+![Problem 6 stage 5](data/Images/Problem%206%20stage%205.png)
+![Problem 6 stage 6](data/Images/Problem%206%20stage%206.png)
+![Problem 6 storage](data/Images/Problem%206%20storage.png)
+![Problem 6 executors](data/Images/Problem%206%20executors.png)
 
 ## Chosen Spark API for Answering Analytical Questions
 
