@@ -122,12 +122,8 @@ narrow transformation, so the computations do not need to be shuffled
 across the cluster.
 
 ![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)
-![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)
 ![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)
-
-<!--![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)-->
-<!--![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)-->
-<!--![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)-->
+![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)
 
 ### 2. What percentage of accidents had alcohol as a contributing factor?
 
