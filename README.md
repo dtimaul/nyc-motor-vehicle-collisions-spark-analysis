@@ -48,6 +48,20 @@ collected by the NYC parks and recreation board in 2015. This datset has
 684K rows, 45 columns, and has a size of 220.4 MB. Each row represents
 the information for a tree living in NYC.
 
+## Chosen Spark API for Answering Analytical Questions
+
+I chose to use the Spark DataFrames API for my analysis. The Spark
+DataFrames API is similar to relational tables in SQL, however it also
+provides a programmatic API allowing for more flexibility in query
+expressiveness, query testing, and is extensible. Additionally, the
+datasets that we will be using for our analysis are in a format that can
+be easily worked with using DataFrames. For example our data is in a
+tabular format with columns and rows, which is how data is represented
+in DataFrames. Additionally, DataFrames inherits all of the properties
+of RDDs such as read only, fault tolerance, caching, and lazy execution
+but with the additional data storage optimizations, code generation,
+query planner, and abstraction.
+
 ## Loading Datasets
 
 In the beforeAll() function, all four CSV files are read in as as
@@ -215,20 +229,6 @@ transformation, shuffling needed to be performed. The code was ran on a single e
 ![Problem 6 stage 6](data/Images/Problem%206%20stage%206.png)
 ![Problem 6 storage](data/Images/Problem%206%20storage.png)
 ![Problem 6 executors](data/Images/Problem%206%20executors.png)
-
-## Chosen Spark API for Answering Analytical Questions
-
-I plan to use the Spark DataFrames API for my analysis simply. The Spark
-DataFrames API is similar to relational tables in SQL, however it also
-provides a programmatic API allowing for more flexibility in query
-expressiveness, query testing, and is extensible. Additionally, the
-datasets that we will be using for our analysis are in a format that can
-be easily worked with using DataFrames. For example our data is in a
-tabular format with columns and rows, which is how data is represented
-in DataFrames. Additionally, DataFrames inherits all of the properties
-of RDDs such as read only, fault tolerance, caching, and lazy execution
-but with the additional data storage optimizations, code generation,
-query planner, and abstraction.
 
 ## Project Overview
 
