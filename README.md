@@ -92,7 +92,8 @@ CONTRIBUTING_FACTOR_VEHICLE_1, then a count the number of occurrence of
 each contributing factor. Finally, we order by count and get the top 5
 contributing factors.
 
-**Spark Internal Analysis**
+#### Spark Internal Analysis
+
 There are three stages that occur for this problem. In stage 1 we read
 the Parquet file from disk or memory if it is cached (as seen in the
 previous section). The RDDs created in stage 1 are
@@ -119,6 +120,8 @@ Finally, we performed the following calculation to get the percentage.
 
 ```(numAlcoholRelatedAccidents * 100) / numTotalAccidents.toDouble ```
 
+#### Spark Internal Analysis
+
 The data in stage 2 was split into 27 partitions, each executing a task.
 However, the data in stage 3 is only executing on a single partition.
 
@@ -133,6 +136,20 @@ one cyclist injury or fatality. Next, we perform a groupBy("CRASH_TIME")
 and counted the number of crashes for the various times throughout a 24
 hour period. Finally, we order by count in descending order and get the
 top 3 times.
+
+#### Spark Internal Analysis
+
+As we can see from stage 2, the tasks each took various amount of time,
+some longer and some shorter. Additionally, towards the end of each
+task, a shuffle write was performed. This is due to a wide
+transformation being performed, and thus the tasks will need to spend
+some time writing the results across the cluster. However, we see in
+stage 3 that shuffle write was needed because the data was already
+shuffled in stage 2 and no operations in stage 3 required a shuffle.
+
+![Problem 3](data/Images/Problem%203.png)
+![Problem 3 Stage 2](data/Images/Problem%203%20Stage%202.png)
+![Problem 3 Stage 3](data/Images/Problem%203%20Stage%203.png)
 
 ### 4. Which zip code had the largest number of nonfatal and fatal accidents?
 
