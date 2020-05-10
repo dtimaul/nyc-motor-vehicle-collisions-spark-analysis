@@ -64,20 +64,21 @@ query planner, and abstraction.
 
 ## Loading Datasets
 
-In the beforeAll() function, all four CSV files are read in as as
+In the beforeAll() function, all three CSV files are read in as as
 DataFrames, then compressed to Parquet format and persisted to external
 storage. A check is made to determine if the Parquet files exist on disk
-before running a test. If the files exist then they will be reused for
-all subsequent tests. Through the use of Parquet, our data will be
-stored in a compressed columnar format, which will allow for faster read
-and write performance as compared to reading from CSV. The file size of
-the datasets when converted to parquet are significantly smaller as
-compared to the original CSV files. For example, the CSV file for the
-NYC Motor Vehicle - Crashes was 369 MB and was reduced to 75.7 MB when
-converted to Parquet. Additionally, the output Parquet files for the The
-NYC Motor Vehicle - Vehicles dataset were partitioned by ZIP_CODE. By
-doing this, the data is physically laid out on the filesystem in an
-order that will be the most efficient for performing our queries.
+before running a test. If the files already exist then they will be
+reused for all subsequent tests otherwise they will be regenerated.
+Through the use of Parquet, our data will be stored in a compressed
+columnar format, which will allow for faster read and write performance
+as compared to reading from CSV. The file size of the datasets when
+converted to parquet are significantly smaller as compared to the
+original CSV files. For example, the CSV file for the NYC Motor Vehicle
+\- Crashes was 369 MB and was reduced to 75.7 MB when converted to
+Parquet. Additionally, the output Parquet files for the The NYC Motor
+Vehicle - Vehicles dataset were partitioned by ZIP_CODE. By doing this,
+the data is physically laid out on the filesystem in an order that will
+be the most efficient for performing our queries.
 
 Some data preparation was needed before converting to Parquet which
 include the following.
@@ -121,8 +122,12 @@ narrow transformation, so the computations do not need to be shuffled
 across the cluster.
 
 ![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)
-![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)
 ![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)
+![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)
+
+<!--![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)-->
+<!--![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)-->
+<!--![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)-->
 
 ### 2. What percentage of accidents had alcohol as a contributing factor?
 
@@ -186,8 +191,8 @@ TOTAL_INJURIES_AND_FATALITIES in descending order and get the top 3.
 Since we are calling the filter function right after loading the
 dataset, Spark will perform a predicate pushdown, where it will push the
 filter down to the data source and perform the filter query before
-returning the result. This improves query performance as it is
-having the data source do the work before returning the result.
+returning the result. This improves query performance as it is having
+the data source do the work before returning the result.
 
 
 ![Problem 4](data/Images/Problem%204.png)
