@@ -114,10 +114,10 @@ the Parquet file from disk or memory if it is cached (as seen in the
 previous section). The RDDs created in stage 1 are
 parrallelCollectionRDD followed by a mapPartitionsRDD. Next, in stage 2
 a FileScanRDD is created, followed by a MapPartitionRDD, then another
-MapParitionsRDD. In stage 3 a shuffledRowRDD is performed because we are
+MapParitionsRDD. In stage 3 a shuffledRowRDD is created because we are
 performing a group by which is a wide transformation, and thus data is
-shuffled across the cluster of nodes. Next, a MapPartsRDD is created,
-then another mapPartitionsRDD is created in the map step. Map is a
+shuffled across the cluster of nodes. Next, a MapPartitionsRDD is created,
+followed by another mapPartitionsRDD in the map step. Map is a
 narrow transformation, so the computations do not need to be shuffled
 across the cluster.
 
