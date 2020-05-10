@@ -92,8 +92,9 @@ CONTRIBUTING_FACTOR_VEHICLE_1, then a count the number of occurrence of
 each contributing factor. Finally, we order by count and get the top 5
 contributing factors.
 
+**Spark Internal Analysis**
 There are three stages that occur for this problem. In stage 1 we read
-the Parquet file from disk or memory if it if cached (as seen in the
+the Parquet file from disk or memory if it is cached (as seen in the
 previous section). The RDDs created in stage 1 are
 parrallelCollectionRDD followed by a mapPartitionsRDD. Next, in stage 2
 a FileScanRDD is created, followed by a MapPartitionRDD, then another
@@ -101,7 +102,7 @@ MapParitionsRDD. In stage 3 a shuffledRowRDD is performed because we are
 performing a group by which is a wide transformation, and thus data is
 shuffled across the cluster of nodes. Next, a MapPartsRDD is created,
 then another mapPartitionsRDD is created in the map step. Map is a
-narrow transormation, so the computations do not need to be shuffled
+narrow transformation, so the computations do not need to be shuffled
 across the cluster.
 
 ![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)
@@ -118,6 +119,12 @@ Finally, we performed the following calculation to get the percentage.
 
 ```(numAlcoholRelatedAccidents * 100) / numTotalAccidents.toDouble ```
 
+The data in stage 2 was split into 27 partitions, each executing a task.
+However, the data in stage 3 is only executing on a single partition.
+
+![Problem 2](data/Images/Problem%202.png)
+![Problem 2 stage 2](data/Images/Problem%202%20stage%202.png)
+![Problem 2 Stage 3](data/Images/Problem%202%20Stage%203.png)
 
 ### 3. What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
 
