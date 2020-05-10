@@ -143,13 +143,16 @@ As we can see from stage 2, the tasks each took various amount of time,
 some longer and some shorter. Additionally, towards the end of each
 task, a shuffle write was performed. This is due to a wide
 transformation being performed, and thus the tasks will need to spend
-some time writing the results across the cluster. However, we see in
-stage 3 that shuffle write was needed because the data was already
-shuffled in stage 2 and no operations in stage 3 required a shuffle.
+some time writing the results across the cluster. In total stage 2 took
+1.1 minute to complete all of its 27 tasks. On the other hand, stage 3
+executed over 200 tasks with a total time across all tasks of only 13
+seconds. By this we can tell that shuffling is costly when it comes to
+execution time, especially if we are processing large amounts of data.
 
 ![Problem 3](data/Images/Problem%203.png)
 ![Problem 3 Stage 2](data/Images/Problem%203%20Stage%202.png)
 ![Problem 3 Stage 3](data/Images/Problem%203%20Stage%203.png)
+![Problem 3 Stage 3_1](data/Images/Problem%203%20Stage%203_1.png)
 
 ### 4. Which zip code had the largest number of nonfatal and fatal accidents?
 
