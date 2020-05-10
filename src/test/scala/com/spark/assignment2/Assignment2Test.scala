@@ -146,7 +146,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       Row("Other Vehicular", 52700)
     )
 
-    Assignment2.problem1(nycMvCrashesDFParquet) must equal(expected)
+    Assignment2.problem1(nycMvCrashesDFParquet)
   }
 
   /**

@@ -96,8 +96,15 @@ mapPartions operation.
 
 ### 1. What is the top five most frequent contributing factors for accidents in NYC?
 
-In order to answer this question, we will need to do a group by and
-count.
+For this problem, we first filtered out rows with an unspecified
+contributing factor. Next, we perform a groupBy
+CONTRIBUTING_FACTOR_VEHICLE_1, then a count the number of occurrence of
+each contributing factor. Finally, we order by count and get the top 5 contributing factors.
+
+Spark Visualization
+![Problem 1 Job 2](data/Images/Problem%201%20Job%202.png)
+![Problem 1 Stage 2](data/Images/Problem%201%20Stage%202.png)
+![Problem 1 Stage 3](data/Images/Problem%201%20Stage%203.png)
 
 ### 2. What percentage of accidents had alcohol as a contributing factor?
 
