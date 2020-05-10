@@ -69,18 +69,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
         .partitionBy("zip_code")
         .parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH)
     }
-    if (!Files.exists(Paths.get(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH))) {
-      def nycMvPersonsDF: DataFrame = spark.read.options(csvReadOptions).csv(NYC_MV_COLLISIONS_PERSONS_PATH)
-      var nycMvPersonsDFColumnsRenamed = nycMvPersonsDF
-      for (col <- nycMvPersonsDF.columns) {
-        nycMvPersonsDFColumnsRenamed = nycMvPersonsDFColumnsRenamed.withColumnRenamed(col, col.replaceAll("\\s", "_"))
-      }
-
-      nycMvPersonsDFColumnsRenamed.write
-        .mode(SaveMode.Overwrite)
-        .option("compression", "none")
-        .parquet(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH)
-    }
     if (!Files.exists(Paths.get(NYC_MV_COLLISIONS_VEHICLES_PARQUET_PATH))) {
       def nycMvVehiclesDF: DataFrame = spark.read.options(csvReadOptions).csv(NYC_MV_COLLISIONS_VEHICLES_PATH)
       var nycMvVehiclesDFColumnsRenamed = nycMvVehiclesDF
@@ -109,10 +97,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
 
   private def nycMvCrashesDFParquet: DataFrame = {
     spark.read.parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH)
-  }
-
-  private def nycMvPersonsDFParquet: DataFrame = {
-    spark.read.parquet(NYC_MV_COLLISIONS_PERSON_PARQUET_PATH).cache()
   }
 
   private def nycMvVehiclesDFParquet: DataFrame = {
