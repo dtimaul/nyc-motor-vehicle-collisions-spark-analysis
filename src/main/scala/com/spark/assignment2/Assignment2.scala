@@ -9,16 +9,19 @@ object Assignment2 {
   private val timestampFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
 
   /**
-   * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
+   * What is the top five most frequent contributing factors for accidents in NYC?
    */
   def problem1(collisions: DataFrame): Seq[Row] = {
-    // Filter accidents where there was at least one cyclist injury or fatality
-    collisions
-      .filter("NUMBER_OF_CYCLIST_INJURED > 0 or NUMBER_OF_CYCLIST_KILLED > 0")
-      .groupBy("CRASH_TIME")
+    // Filter out rows with an unspecified contributing factor
+    val collisionsDFModified = collisions.filter(col("CONTRIBUTING_FACTOR_VEHICLE_1") =!= "Unspecified")
+
+    // Perform a groupBy CONTRIBUTING_FACTOR_VEHICLE_1, then count the number of occurrences of each contributing factor.
+    // Finally, order by count and get the top 5
+    collisionsDFModified
+      .groupBy("CONTRIBUTING_FACTOR_VEHICLE_1")
       .count()
       .orderBy(desc("count"))
-      .head(3)
+      .head(5)
   }
 
   /**
@@ -39,19 +42,16 @@ object Assignment2 {
   }
 
   /**
-   * What is the top five most frequent contributing factors for accidents in NYC?
+   * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
    */
   def problem3(collisions: DataFrame): Seq[Row] = {
-    // Filter out rows with an unspecified contributing factor
-    val collisionsDFModified = collisions.filter(col("CONTRIBUTING_FACTOR_VEHICLE_1") =!= "Unspecified")
-
-    // Perform a groupBy CONTRIBUTING_FACTOR_VEHICLE_1, then count the number of occurrences of each contributing factor.
-    // Finally, order by count and get the top 5
-    collisionsDFModified
-        .groupBy("CONTRIBUTING_FACTOR_VEHICLE_1")
-        .count()
-        .orderBy(desc("count"))
-        .head(5)
+    // Filter accidents where there was at least one cyclist injury or fatality
+    collisions
+      .filter("NUMBER_OF_CYCLIST_INJURED > 0 or NUMBER_OF_CYCLIST_KILLED > 0")
+      .groupBy("CRASH_TIME")
+      .count()
+      .orderBy(desc("count"))
+      .head(3)
   }
 
   /**

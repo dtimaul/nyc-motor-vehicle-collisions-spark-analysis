@@ -58,14 +58,50 @@ collected by the NYC parks and recreation board in 2015. This datset has
 684K rows, 45 columns, and has a size of 220.4 MB. Each row represents
 the information for a tree living in NYC.
 
+## Loading Datasets
+
+In the beforeAll() function, all four CSV files are read in as as
+DataFrames, then compressed to Parquet format and persisted to external
+storage. A check is made to determine if the Parquet files exist on disk
+before running a test. If the files exist then they will be reused for
+all subsequent tests. Through the use of Parquet, our data will be
+stored in a compressed columnar format, which will allow for faster read
+and write performance as compared to reading from CSV. The file size of
+the datasets when converted to parquet are significantly smaller as
+compared to the original CSV files. For example, the CSV file for the
+NYC Motor Vehicle - Crashes was 369 MB and was reduced to 75.7 MB when
+converted to Parquet. Additionally, the output Parquet files for the The
+NYC Motor Vehicle - Vehicles dataset were partitioned by ZIP_CODE. By
+doing this, the data is physically laid out on the filesystem in an
+order that will be the most efficient for performing our queries.
+
+Some data preparation was needed before converting to Parquet which
+include the following.
+- For all DataFrames, the whitespace between columns names needed to be
+  replaced with underscores to avoid the invalid character errors when
+  converting to Parquet. E.g. from CRASH TIME to CRASH_TIME.
+- The data types of several columns in the NYC Motor Vehicle - Crashes
+  dataset needed to casted from a string to an integer type because they
+  will be used for numerical calculations in our query.
+
+The below Directed acyclic graph (DAG) show the operations performed
+when reading a parquet file. This operation is performed each time a
+test is ran. Spark performs a parallelize operation followed by a
+mapPartions operation.
+
+![Parquet1](data/Images/Parquet1.png)
+![Parquet2](data/Images/Parquet2.png)
+
 ## Analytic Questions
 
-### What is the top five most frequent contributing factors for accidents in NYC?
+### 1. What is the top five most frequent contributing factors for accidents in NYC?
 
 In order to answer this question, we will need to do a group by and
 count.
 
-### What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
+### 2. What percentage of accidents had alcohol as a contributing factor?
+
+### 3. What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
 
 In order to answer this question, we will need to add the number of
 cyclist injured plus the number of cyclist deaths for each row and store
@@ -73,22 +109,21 @@ the result in a new column. Next, we will need to group by crash time
 and get the crash time with the most amount of cyclist injured or
 deaths.
 
-### What percentage of accidents had alcohol as a contributing factor?
 
 In order to answer this question, We will need to do a filter and count.
 
-### Which zip code had the largest number of nonfatal and fatal accidents?
+### 4. Which zip code had the largest number of nonfatal and fatal accidents?
 
-### Which vehicle make, model, and year was involved in the most accidents?
+### 5. Which vehicle make, model, and year was involved in the most accidents?
 
 One possible solution is to group by vehicle year and make.
 
-### How do the number of collisions in an area of NYC correlate to the number of trees in the area?
+### 6. How do the number of collisions in an area of NYC correlate to the number of trees in the area?
 
 In order to answer this question, we will need to join the NYC Motor
 Vehicle Collisions and 2015 NYC Tree Census Dataset by zip code.
 
-### What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
+### 7. What is the average number of people involved in crashes per year in NYC between the years 2012 and 2020?
 
 ## Chosen Spark API for Answering Analytical Questions
 

@@ -39,7 +39,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       .builder()
       .appName("Assignment 2")
       .master("local[*]") // Spark runs in 'local' mode using all cores
-      .config("spark.executor.instances", "3")
       .config("spark.sql.parquet.filterPushdown", true)
       .getOrCreate()
 
@@ -58,6 +57,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
       for (col <- nycMvCrashesDF.columns) {
         nycMvCrashesDFColumnsRenamed = nycMvCrashesDFColumnsRenamed.withColumnRenamed(col, col.replaceAll("\\s", "_"))
       }
+
+      nycMvCrashesDFColumnsRenamed.withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
+        .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
+        .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
+        .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
 
       nycMvCrashesDFColumnsRenamed.write
         .mode(SaveMode.Overwrite)
@@ -105,11 +109,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
 
   private def nycMvCrashesDFParquet: DataFrame = {
     spark.read.parquet(NYC_MV_COLLISIONS_CRASHES_PARQUET_PATH)
-      .withColumn("NUMBER_OF_CYCLIST_INJURED", col("NUMBER_OF_CYCLIST_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_CYCLIST_KILLED", col("NUMBER_OF_CYCLIST_KILLED").cast(IntegerType))
-      .withColumn("NUMBER_OF_PERSONS_INJURED", col("NUMBER_OF_PERSONS_INJURED").cast(IntegerType))
-      .withColumn("NUMBER_OF_MOTORIST_INJURED", col("NUMBER_OF_MOTORIST_INJURED").cast(IntegerType))
-      .cache()
   }
 
   private def nycMvPersonsDFParquet: DataFrame = {
@@ -131,21 +130,23 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   override def afterEach: Unit = {
     if (BLOCK_ON_COMPLETION) {
       // open SparkUI at http://localhost:4040
-      Thread.sleep(5.minutes.toMillis)
+      Thread.sleep(15.minutes.toMillis)
     }
   }
 
   /**
-    * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
-    */
-  test("Time of day with the most cyclist injures or deaths caused by a motor vehicle collision?") {
+   * What is the top five most frequent contributing factors for accidents in NYC?
+   */
+  test("Top five most frequent contributing factors for accidents in NYC") {
     val expected = Array(
-      Row("18:00", 476),
-      Row("17:00", 420),
-      Row("19:00", 411)
+      Row("Driver Inattention/Distraction", 313879),
+      Row("Failure to Yield Right-of-Way", 95574),
+      Row("Following Too Closely", 84660),
+      Row("Backing Unsafely", 63847),
+      Row("Other Vehicular", 52700)
     )
 
-    Assignment2.problem1(nycMvCrashesDFParquet) must equal (expected)
+    Assignment2.problem1(nycMvCrashesDFParquet) must equal(expected)
   }
 
   /**
@@ -156,18 +157,16 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   }
 
   /**
-    * What is the top five most frequent contributing factors for accidents in NYC?
-    */
-  test("Top five most frequent contributing factors for accidents in NYC") {
+   * What time of day sees the most cyclist injures or deaths caused by a motor vehicle collision?
+   */
+  test("Time of day with the most cyclist injures or deaths caused by a motor vehicle collision?") {
     val expected = Array(
-      Row("Driver Inattention/Distraction", 313879),
-      Row("Failure to Yield Right-of-Way", 95574),
-      Row("Following Too Closely", 84660),
-      Row("Backing Unsafely", 63847),
-      Row("Other Vehicular", 52700)
+      Row("18:00", 476),
+      Row("17:00", 420),
+      Row("19:00", 411)
     )
 
-    Assignment2.problem3(nycMvCrashesDFParquet) must equal(expected)
+    Assignment2.problem3(nycMvCrashesDFParquet) must equal (expected)
   }
 
   /**
