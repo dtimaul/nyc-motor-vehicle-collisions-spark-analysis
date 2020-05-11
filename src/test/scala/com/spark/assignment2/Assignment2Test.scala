@@ -100,11 +100,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterAll w
   }
 
   private def nycMvVehiclesDFParquet: DataFrame = {
-    spark.read.parquet(NYC_MV_COLLISIONS_VEHICLES_PARQUET_PATH).cache()
+    spark.read.parquet(NYC_MV_COLLISIONS_VEHICLES_PARQUET_PATH)
   }
 
   private def nycTreeCensusDFParquet: DataFrame = {
-    spark.read.parquet(NYC_TREE_CENSUS_PARQUET_PATH).cache()
+    spark.read.parquet(NYC_TREE_CENSUS_PARQUET_PATH)
   }
 
   /**
