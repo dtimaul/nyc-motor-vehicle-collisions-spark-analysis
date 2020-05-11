@@ -116,12 +116,11 @@ the listing leaf files and directory for 234 paths, which are the
 different paths that were created when we partitioned the NYC Motor
 Vehicle Collisions \- Crashes DataFrame by "ZIP_CODE". Each path
 represents a different ZIP_CODE. Next, in stage 1, we read the Parquet
-file from disk or memory if it is cached (as seen in the previous
-section). In our case, we are caching the parquet file for our
-DataFrame. The RDDs created in stage 1 are a parrallelCollectionRDD
-followed by a mapPartitionsRDD. Next, in stage 2 a FileScanRDD is
-created, followed by a MapPartitionRDD, then another MapParitionsRDD. In
-stage 3 a shuffledRowRDD is created because we are performing a group by
+file from disk (as seen in the previous section). The RDDs created in
+stage 1 are a parrallelCollectionRDD followed by a mapPartitionsRDD.
+Next, in stage 2 a FileScanRDD is created, followed by a
+MapPartitionRDD, then another MapParitionsRDD. In stage 3 a
+shuffledRowRDD is created because we are performing a groupBy function
 which is a wide transformation, and thus data is shuffled across the
 cluster of nodes. Next, a MapPartitionsRDD is created, followed by
 another mapPartitionsRDD in the map step. The map function uses a narrow
@@ -147,7 +146,8 @@ Finally, we performed the following calculation to get the percentage.
 #### Spark Internal Analysis
 
 The data in stage 2 was split into 27 partitions, each executing a task.
-However, the data in stage 3 is only executing on a single partition.
+However, the data in stage 3 is only needed to execute a single task on
+a single partition.
 
 ![Problem 2](data/Images/Problem%202.png)
 ![Problem 2 stage 2](data/Images/Problem%202%20stage%202.png)
