@@ -18,7 +18,7 @@ can be used to help prevent certain accidents from occurring.
 
 The NYC Motor Vehicle Collisions - Crashes [2] dataset was the primary
 dataset used for our analysis. We also used NYC Motor Vehicle Crashes -
-Vehicle [3] and the 2015 NYC Tree Census [3] as our secondary datasets.
+Vehicle [3] and the 2015 NYC Tree Census [4] as our secondary datasets.
 All of the datasets were obtained from NYC OpenData in CSV format and
 contain the most up to date motor vehicle collision information
 available to the public.
@@ -43,7 +43,7 @@ of 566.3 MB. Each row represents the vehicle information for a specific
 crash, which can also be tied back to the NYC Motor Vehicle Collisions -
 Crashes dataset. Multiple vehicles can be involved in a single crash.
 
-### 2015 NYC Tree Census: [4]
+### 2015 NYC Tree Census:
 
 This dataset contains detailed information on the trees living
 throughout NYC collected by the NYC Parks and Recreation Board in 2015.
@@ -126,7 +126,9 @@ which is a wide transformation, and thus data is shuffled across the
 cluster of nodes. Next, a MapPartitionsRDD is created, followed by
 another mapPartitionsRDD in the map step. The map function uses a narrow
 transformation, so the computations do not need to be shuffled across
-the cluster. ![Problem 1 cropped](data/Images/Problem%201%20cropped.png)
+the cluster.
+
+![Problem 1 cropped](data/Images/Problem%201%20cropped.png)
 ![Problem 1 Stage 2 cropped](data/Images/Problem%201%20Stage%202%20cropped.png)
 ![Problem 1 Stage 3 cropped](data/Images/Problem%201%20Stage%203%20cropped.png)
 
@@ -178,8 +180,8 @@ time, especially if we are processing large amounts of data.
 
 ### 4. Which zip code had the largest number of nonfatal and fatal accidents?
 
-Find the zip code with the most significant number of nonfatal and fatal
-accidents required several steps. First, remove rows with null zip
+Finding the zip code with the most significant number of nonfatal and
+fatal accidents required several steps. First, remove rows with null zip
 codes. Next, create a new column "TOTAL_INJURED_OR_KILLED", which is the
 sum of all nonfatal and fatal injuries for each accident. Next, get the
 total number of nonfatal and fatal injuries per zip code by first
@@ -191,7 +193,7 @@ TOTAL_INJURIES_AND_FATALITIES in descending order and get the top 3.
 
 #### Spark Internal Analysis
 
-Since we are calling the filter function right after loading the
+Because we are calling the filter function right after loading the
 dataset, Spark performed a predicate pushdown, where it pushed the
 filter function down to the data source and performed the filter query
 before returning the result to the driver. A predicate pushdown improves
