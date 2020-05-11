@@ -309,15 +309,6 @@ isn't always useful or desired during regular development. To reduce the
 verbosity of logs, change the line `log4j.logger.org.apache.spark=INFO`
 to `log4j.logger.org.apache.spark=WARN`
 
-## Scala Worksheets
-
-The worksheet `src/test/scala/com/spark/example/playground.sc` is a good
-place to try out Scala code. Add your code to the left pane of the
-worksheet, click the 'play' button, and the result will display in the
-right pane.
-
-Note: The worksheet will not work for Spark code.
-
 ## Documentation
 
 * RDD: https://spark.apache.org/docs/latest/rdd-programming-guide.html
